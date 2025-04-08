@@ -43,6 +43,7 @@ public:
 	float mediaNivel(int nivel);
 	int alturaNos();
 	int contadorNos();
+	bool ehCompletaAux(NoABB *no, int index, int total);
 };
 
 #endif

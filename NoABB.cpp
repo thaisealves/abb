@@ -184,21 +184,21 @@ void NoABB::imprimeIntervalo(int x, int y)
 
 bool NoABB::ehCompleta() // todos os níveis estão completos, exceto o último, que pode estar incompleto
 {
-	if (this->esq == NULL && this->dir == NULL)
+	int total = this->contadorNos();
+	return this->ehCompletaAux(this, 0, total);
+}
+bool NoABB::ehCompletaAux(NoABB *no, int index, int total) // verificar se todos os níveis da árvore estão preenchidos
+// uma árvore é completa se nenhum indice for pulado antes de acabar os nós
+{
+	if (no == NULL)
 		return true;
 
-	if (this->esq == NULL && this->dir != NULL)
+	if (index >= total) // index vai mudando de acordo com a posição do nó,
+						// pra direita soma 2 e pra esquerda soma 1, se em algum momento for maior que o total retorna false
 		return false;
 
-	if (this->esq != NULL && this->dir == NULL)
-		return this->esq->alturaNos() == 1 && this->esq->ehCompleta();
-
-	int alturaEsq = this->esq->alturaNos();
-	int alturaDir = this->dir->alturaNos();
-	if (alturaEsq < alturaDir) // a altura da esquerda tem que ser maior ou igual à direita, não pode estar sobrando na direita
-		return false;
-	// se tem filho esquerdo e direito faz as duas buscas
-	return this->esq->ehCompleta() && this->dir->ehCompleta();
+	return ehCompletaAux(no->getEsq(), 2 * index + 1, total) &&
+		   ehCompletaAux(no->getDir(), 2 * index + 2, total);
 }
 bool NoABB::ehCheia() // perfeitamente cheia com dois filhos até o último nível
 {
